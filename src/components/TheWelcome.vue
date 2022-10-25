@@ -5,9 +5,16 @@ import ToolingIcon from "./icons/IconTooling.vue";
 import EcosystemIcon from "./icons/IconEcosystem.vue";
 import CommunityIcon from "./icons/IconCommunity.vue";
 import SupportIcon from "./icons/IconSupport.vue";
+import { mapStores } from "pinia";
+import { useUserStore } from "../stores/user";
 
 export default {
   name: "TheWelcome",
+  computed: {
+    // note we are not passing an array, just one store after the other
+    // each store will be accessible as its id + 'Store'
+    ...mapStores(useUserStore),
+  },
   components: {
     WelcomeItem,
     DocumentationIcon,
@@ -20,6 +27,9 @@ export default {
 </script>
 
 <template>
+  <div>
+    <h3>Welcome: {{ this.userStore.name + ", " + this.userStore.email }}</h3>
+  </div>
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
@@ -131,3 +141,12 @@ export default {
     >.
   </WelcomeItem>
 </template>
+
+<style scoped>
+h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--color-heading);
+}
+</style>

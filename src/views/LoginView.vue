@@ -1,4 +1,7 @@
 <script>
+import router from "../router/index.js";
+import { useUserStore } from "../stores/user";
+
 export default {
   name: "LoginView",
   data() {
@@ -11,8 +14,9 @@ export default {
       this.username = e.target.value;
     },
     onLogin() {
-      sessionStorage.setItem("user", this.username);
-      this.username = "";
+      const userStore = useUserStore();
+      userStore.login(this.username);
+      router.push({ path: "/", query: { username: this.username } });
     },
   },
 };

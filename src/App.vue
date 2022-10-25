@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import router from "./router/index.js";
+import { useUserStore } from "./stores/user";
 
 export default {
   name: "AppComponent",
@@ -13,9 +14,9 @@ export default {
 };
 
 router.beforeEach((to, from, next) => {
-  console.log(to);
-  console.log(from);
-  !sessionStorage.getItem("user") && to.name !== "login"
+  const userStore = useUserStore();
+
+  !userStore.isAuthenticated() && to.name !== "login"
     ? next({ name: "login" })
     : next();
 });
