@@ -5,12 +5,14 @@ export const useUserStore = defineStore({
   state: () => ({
     name: "",
     email: "",
+    favorites: [],
   }),
 
   actions: {
     logout() {
       this.name = "";
       this.email = "";
+      this.favorites = [];
       // we could do other stuff like redirecting the user
     },
     /**
@@ -20,9 +22,18 @@ export const useUserStore = defineStore({
     async login(user) {
       this.name = user;
       this.email = this.name + "@utec.edu.pe";
+      this.favorites = JSON.parse(localStorage.getItem(this.name)) || [];
     },
     isAuthenticated() {
       return this.name !== "";
+    },
+    addFavorite(favorite) {
+      this.favorites.push(favorite);
+      localStorage.setItem(this.name, JSON.stringify(this.favorites));
+    },
+    removeFavorite(favorite) {
+      this.favorites = this.favorites.filter((item) => item !== favorite);
+      localStorage.setItem(this.name, JSON.stringify(this.favorites));
     },
   },
 });
