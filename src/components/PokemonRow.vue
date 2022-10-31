@@ -4,56 +4,61 @@ import { useUserStore } from "../stores/user";
 
 export default {
   name: "PokemonRow",
-  props: ["num", "name", "img", "type", "weaknesses", "next_evolution"],
+  props: ["num", "name", "img", "weaknesses", "next_evolution", "type"],
   methods: {
-    typeToIcon(weakness) {
-      return "src/assets/icons/" + weakness.toLowerCase() + ".svg";
+    typeToIcon(type) {
+      return "src/assets/icons/" + type.toLowerCase() + ".svg";
     },
-    pokemonToImage(pokemonEvolution) {
-      return pokemon.find(
-        (pokemonRow) => pokemonRow.num === pokemonEvolution.num
-      ).img;
+    findPokemon(evolution) {
+      return pokemon.find((item) => item.num === evolution.num).img;
     },
-    setFavorite(num) {
+    setFavorite() {
       const userStore = useUserStore();
-      this.isFavorite = !this.isFavorite;
-      this.isFavorite
-        ? userStore.addFavorite(num)
-        : userStore.removeFavorite(num);
+      this.favorite = !this.favorite;
+
+      this.favorite
+        ? userStore.addFavorite(this.num)
+        : userStore.removeFavorite(this.num);
+    },
+    showPokemon() {
+      this.$router.push({
+        path: `/pokemon/${this.num}`,
+        query: { name: this.name, img: this.img, type: this.type },
+      });
     },
   },
   data() {
     return {
-      isFavorite: false,
+      favorite: false,
     };
   },
   created() {
     const userStore = useUserStore();
-    this.isFavorite = userStore.favorites.includes(this.num);
+    this.favorite = userStore.favorites.includes(this.num);
   },
 };
 </script>
 
 <template>
-  <tr>
+  <tr @click="showPokemon">
     <td>{{ num }}</td>
     <td>{{ name }}</td>
+    <td>
+      <img
+        v-for="(typeRow, index) in type"
+        :key="index"
+        width="40"
+        height="40"
+        :src="typeToIcon(typeRow)"
+      />
+    </td>
     <td><img :src="img" /></td>
     <td>
       <img
-        v-for="(tipo, index) in type"
-        width="40"
-        height="40"
-        :key="index"
-        :src="typeToIcon(tipo)"
-      />
-    </td>
-    <td>
-      <img
         v-for="(weakness, index) in weaknesses"
+        :key="index"
         width="40"
         height="40"
-        :key="index"
         :src="typeToIcon(weakness)"
       />
     </td>
@@ -63,16 +68,16 @@ export default {
         :key="index"
         width="70"
         height="70"
-        :src="pokemonToImage(evolution)"
+        :src="findPokemon(evolution)"
       />
     </td>
     <td>
       <svg
-        v-if="!isFavorite"
-        @click="setFavorite(num)"
+        @click="setFavorite"
+        v-if="!favorite"
         xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
+        width="30"
+        height="30"
         fill="currentColor"
         class="bi bi-star"
         viewBox="0 0 16 16"
@@ -82,11 +87,11 @@ export default {
         />
       </svg>
       <svg
-        v-if="isFavorite"
-        @click="setFavorite(num)"
+        @click="setFavorite"
+        v-if="favorite"
         xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
+        width="30"
+        height="30"
         fill="currentColor"
         class="bi bi-star-fill"
         viewBox="0 0 16 16"

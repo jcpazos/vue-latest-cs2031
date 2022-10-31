@@ -12,7 +12,6 @@ export const useUserStore = defineStore({
     logout() {
       this.name = "";
       this.email = "";
-      this.favorites = [];
       // we could do other stuff like redirecting the user
     },
     /**
@@ -22,7 +21,7 @@ export const useUserStore = defineStore({
     async login(user) {
       this.name = user;
       this.email = this.name + "@utec.edu.pe";
-      this.favorites = JSON.parse(localStorage.getItem(this.name)) || [];
+      this.favorites = JSON.parse(localStorage.getItem(user)) || [];
     },
     isAuthenticated() {
       return this.name !== "";
