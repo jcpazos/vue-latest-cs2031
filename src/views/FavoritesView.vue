@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <div class="pokedex"> 
+  <div class="pokedex">
     <table class="table table-dark">
       <thead>
         <tr>
