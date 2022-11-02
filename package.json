@@ -3,16 +3,24 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "test": "jest",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
   "dependencies": {
+    "jest": "^29.2.2",
     "pinia": "^2.0.23",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.19.4",
     "@rushstack/eslint-patch": "^1.1.4",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vitejs/plugin-vue-jsx": "^2.0.1",

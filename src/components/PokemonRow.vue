@@ -1,25 +1,20 @@
 <script>
 import { pokemon } from "../datasets/pokemon.json";
 import { useUserStore } from "../stores/user";
+import pokemonHelper from "./ComponentUtils/PokemonRow.helper";
 
 export default {
   name: "PokemonRow",
   props: ["num", "name", "img", "type", "weaknesses", "next_evolution"],
   methods: {
     typeToIcon(weakness) {
-      return "src/assets/icons/" + weakness.toLowerCase() + ".svg";
+      return pokemonHelper.typeToIcon(weakness);
     },
     pokemonToImage(pokemonEvolution) {
-      return pokemon.find(
-        (pokemonRow) => pokemonRow.num === pokemonEvolution.num
-      ).img;
+      return pokemonHelper.pokemonToImage(pokemonEvolution, pokemon);
     },
     setFavorite(num) {
-      const userStore = useUserStore();
-      this.isFavorite = !this.isFavorite;
-      this.isFavorite
-        ? userStore.addFavorite(num)
-        : userStore.removeFavorite(num);
+      this.isFavorite = pokemonHelper.setFavorite(num);
     },
   },
   data() {
