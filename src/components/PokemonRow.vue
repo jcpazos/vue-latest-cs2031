@@ -14,7 +14,11 @@ export default {
       return pokemonHelper.pokemonToImage(pokemonEvolution, pokemon);
     },
     setFavorite(num) {
-      this.isFavorite = pokemonHelper.setFavorite(num);
+      const userStore = useUserStore();
+      this.isFavorite = !this.isFavorite;
+      this.isFavorite
+        ? userStore.addFavorite(num)
+        : userStore.removeFavorite(num);
     },
   },
   data() {
